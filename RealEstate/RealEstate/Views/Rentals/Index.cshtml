@@ -1,0 +1,98 @@
+﻿@using System.Data
+@using RealEstate.Rentals
+@model RealEstate.Rentals.RentalsList
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm())
+{
+    <label for="PriceLimit">Price Limit</label>
+    <input type="text" name="PriceLimit" value="@Model.Filters.PriceLimit" />
+    <label for="MinimumRooms">Minimum Rooms</label>
+    <input type="text" name="MinimumRooms" value="@Model.Filters.MinimumRooms" />
+    <input type="submit" value="Search" />
+
+
+<p>
+
+</p>
+
+    <div >
+        <table class="table">
+            <tr>
+                <th>
+                    Description
+                </th>
+
+                <th>
+                    Price
+                </th>
+
+                <th>
+                    Room Count
+                </th>
+                <th>
+                   Address
+                </th>
+                <th>
+                    Last Adjustment
+                </th>
+                <th>
+                    Adjust Price
+                </th>
+                <th>
+                    images
+                </th>
+                <th>
+                    Delete Listing
+                </th>
+            </tr>
+             @foreach (var item in Model.Rentals)
+             {
+                 <tr>
+                     <td>
+                         @Html.DisplayFor(desc=>item.Description)
+                     </td>
+                     <td>
+                         @Html.DisplayFor(modelitem => item.Price)
+                     </td>
+                     <td>
+                         @Html.DisplayFor(modelitem => item.RoomCount)
+                     </td>
+                     <td>
+                         @Html.DisplayFor(modelitem => item.Address)
+                     </td>
+                     <td>
+                         @item.Adjustments.Select(a=> a.Describe()).LastOrDefault()
+                     </td>
+                     <td>
+                         @Html.ActionLink("Adjust Price", "AdjustPrice", new {id = item.id})
+                     </td>
+                     <td>
+                         @Html.ActionLink("ImageDelete", "AttachImage", new { id = item.id })
+                         @Html.ActionLink("Image", "Attachimage", new {id = item.id})
+                     </td>
+                     <td>
+                         @Html.ActionLink("Delete Listing", "Delete", new { id = item.id })
+                     </td>
+                 </tr>
+             }
+        </table>
+
+    </div>
+
+}
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
